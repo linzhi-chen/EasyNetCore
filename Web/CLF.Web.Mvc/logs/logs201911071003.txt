@@ -1,0 +1,1 @@
+2019-11-07 10:03:12.092 +08:00 [FTL] No storage mechanism for grants specified. Use the 'AddInMemoryPersistedGrants' extension method to register a development version.

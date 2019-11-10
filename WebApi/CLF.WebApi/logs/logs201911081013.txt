@@ -1,0 +1,3 @@
+2019-11-08 10:13:35.725 +08:00 [ERR] client_id is missing or too long
+{"ClientId":null,"ClientName":null,"RedirectUri":null,"AllowedRedirectUris":null,"SubjectId":"anonymous","ResponseType":null,"ResponseMode":null,"GrantType":null,"RequestedScopes":"","State":null,"UiLocales":null,"Nonce":null,"AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":null,"MaxAge":null,"LoginHint":null,"SessionId":null,"Raw":{},"$type":"AuthorizeRequestValidationLog"}
+2019-11-08 10:13:35.742 +08:00 [ERR] Request validation failed

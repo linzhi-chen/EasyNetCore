@@ -1,0 +1,3 @@
+2019-11-08 11:16:58.826 +08:00 [ERR] Invalid redirect_uri: https://localhost:10086/api/gettoken
+{"ClientId":"chenlinfeicc","ClientName":null,"RedirectUri":null,"AllowedRedirectUris":["http://localhost:10086/api/auth/GetToken"],"SubjectId":"anonymous","ResponseType":null,"ResponseMode":null,"GrantType":null,"RequestedScopes":"","State":null,"UiLocales":null,"Nonce":null,"AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":null,"MaxAge":null,"LoginHint":null,"SessionId":null,"Raw":{"client_id":"chenlinfeicc","redirect_uri":"https://localhost:10086/api/gettoken","response_type":"code","scope":"abc"},"$type":"AuthorizeRequestValidationLog"}
+2019-11-08 11:16:58.864 +08:00 [ERR] Request validation failed

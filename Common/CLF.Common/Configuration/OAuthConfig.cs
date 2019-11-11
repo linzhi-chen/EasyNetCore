@@ -1,5 +1,6 @@
 ﻿using IdentityServer4.Models;
 using IdentityServer4.Test;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,6 +37,11 @@ namespace CLF.Common.Configuration
         public string RedirectUris { get; set; }
 
         public string IdentityServerUri { get; set; }
+
+        /// <summary>
+        /// 是否开启密码授权模式
+        /// </summary>
+        public bool PasswordAuthorizationEnabled { get; set; }
 
         public IEnumerable<IdentityResource> GetIdentityResources()
         {
@@ -87,19 +93,6 @@ namespace CLF.Common.Configuration
                     AllowedGrantTypes=GrantTypes.Code,
                     AllowedScopes={ AllowedScopes },
                     RedirectUris={RedirectUris}
-                }
-            };
-        }
-
-        public  List<TestUser> GetUsers()
-        {
-            return new List<TestUser>()
-            {
-                new TestUser()
-                {
-                    Username ="chenlinfei",
-                    Password ="qwert123",
-                    SubjectId="0"
                 }
             };
         }

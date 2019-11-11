@@ -7,6 +7,7 @@ using CLF.Web.Framework.Identity.Providers;
 using CLF.Web.Framework.Mvc.Filters;
 using EasyCaching.Core;
 using EasyCaching.InMemory;
+using IdentityServer4.Test;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -255,22 +256,6 @@ namespace CLF.Web.Framework.Infrastructure.Extensions
                 var oAuthConfig = services.ConfigureStartupConfig<OAuthConfig>(configuration.GetSection("OAuth"));
                 AddOAuthConfiguration(authenticationBuilder, oAuthConfig);
             }
-        }
-
-        /// <summary>
-        /// identityserver4配置（OAuth）
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="configuration"></param>
-        public static void AddAppIdentityServer(this IServiceCollection services, IConfiguration configuration)
-        {
-            var config = services.ConfigureStartupConfig<OAuthConfig>(configuration.GetSection("OAuth"));
-            services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
-                .AddInMemoryIdentityResources(config.GetIdentityResources())
-                .AddInMemoryApiResources(config.GetApis())
-                .AddInMemoryClients(config.GetClients())
-                .AddTestUsers(config.GetUsers());
         }
 
         public static TConfig ConfigureStartupConfig<TConfig>(this IServiceCollection services, IConfiguration configuration) where TConfig : class, new()

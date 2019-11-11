@@ -7,9 +7,6 @@ using System.Text;
 
 namespace CLF.Service.Test
 {
-    /// <summary>
-    /// 
-    /// </summary>
     [TestFixture]
     public class ServiceCoreTest:ServiceTestBase
     {

@@ -1,6 +1,7 @@
 ﻿using CLF.Common.Configuration;
 using CLF.Common.Exceptions;
 using CLF.Common.Infrastructure;
+using CLF.Model.Account;
 using CLF.Service.Account;
 using CLF.Service.DTO.Account;
 using CLF.Web.Framework.Mvc;
@@ -24,9 +25,11 @@ namespace CLF.WebApi.Controllers
     {
         public static HttpClient _httpClient = new HttpClient();
         private ITokenService _tokenService;
-        public OAuthController(ITokenService tokenService)
+        private UserManager<AspNetUsers> _userManager;
+        public OAuthController(ITokenService tokenService, UserManager<AspNetUsers> userManager)
         {
             this._tokenService = tokenService;
+            this._userManager = userManager;
         }
 
         /// <summary>
@@ -116,17 +119,20 @@ namespace CLF.WebApi.Controllers
                         Scope = scope
                     });
                     break;
+
                 case "password":
+                    var user = await _userManager.FindByNameAsync(userName);
                     token = await _httpClient.RequestPasswordTokenAsync(new PasswordTokenRequest()
                     {
                         Address = disco.TokenEndpoint,
                         ClientId = $"{nameof(GrantTypes.ResourceOwnerPassword)}_{clientId}",
                         ClientSecret = clientSecret,
                         UserName = userName,
-                        Password = password,
+                        Password =user.PasswordHash,
                         Scope = scope
                     });
                     break;
+
                 case "code":
                     token = await _httpClient.RequestAuthorizationCodeTokenAsync(new AuthorizationCodeTokenRequest()
                     {

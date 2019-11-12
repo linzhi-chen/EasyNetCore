@@ -22,11 +22,8 @@ namespace CLF.Web.SSO
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
         }
-
         public IConfiguration Configuration { get; }
-        public UserManager<AspNetUsers> UserManager { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -47,9 +44,7 @@ namespace CLF.Web.SSO
         {
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
             app.UseIdentityServer();
-
             app.UseMvcWithDefaultRoute();
         }
 
@@ -72,11 +67,16 @@ namespace CLF.Web.SSO
                 identityServerBuilder.AddTestUsers(GetIdentityTestUsers(services));
         }
 
-        public List<IdentityServer4.Test.TestUser> GetIdentityTestUsers(IServiceCollection services)
+        /// <summary>
+        /// 用户量多可以缓存，项目启动后新用户如何验证值得思考
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        private List<IdentityServer4.Test.TestUser> GetIdentityTestUsers(IServiceCollection services)
         {
-            UserManager = services.BuildServiceProvider().GetService<UserManager<AspNetUsers>>();
-            List<IdentityServer4.Test.TestUser> testUsers = new List<IdentityServer4.Test.TestUser>();
-            foreach (var user in UserManager.Users)
+            var userManager = services.BuildServiceProvider().GetService<UserManager<AspNetUsers>>();
+            var testUsers = new List<IdentityServer4.Test.TestUser>();
+            foreach (var user in userManager.Users)
             {
                 testUsers.Add(new IdentityServer4.Test.TestUser
                 {

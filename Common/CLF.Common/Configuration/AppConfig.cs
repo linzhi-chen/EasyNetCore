@@ -28,6 +28,7 @@ namespace CLF.Common.Configuration
 
         public bool JwtAuthenticationEnabled { get; set; }
         public bool OAuthAuthenticationEnabled { get; set; }
+
     }
 
     public partial class JwtConfig

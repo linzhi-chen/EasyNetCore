@@ -1,5 +1,6 @@
 ﻿using CLF.Common.Caching;
 using CLF.Common.Configuration;
+using CLF.Common.Exceptions;
 using CLF.Common.Extensions;
 using CLF.Common.Infrastructure;
 using CLF.Common.SecurityHelper;
@@ -37,6 +38,9 @@ namespace CLF.Service.Account
         }
         public string GenerateAccessToken(string userName)
         {
+            if (jwtConfig == null)
+                throw new BusinessPromptException("jwt认证配置错误。");
+
             var usersClaims = new[]
             {
                  new Claim(JwtRegisteredClaimNames.Nbf,$"{new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds()}") ,

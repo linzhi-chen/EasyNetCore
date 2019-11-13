@@ -1,4 +1,0 @@
-2019-11-08 11:19:01.642 +08:00 [ERR] Invalid scope: abc
-2019-11-08 11:19:01.659 +08:00 [ERR] Request validation failed
-2019-11-08 11:19:07.548 +08:00 [ERR] Invalid scope: abc
-2019-11-08 11:19:07.552 +08:00 [ERR] Request validation failed

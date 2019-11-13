@@ -17,6 +17,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CLF.Web.SSO
 {
+    /// <summary>
+    ///sso登录授权地址：http://sso.yangmi666.com/connect/authorize?client_id=Code_chenlinfei&response_type=code&redirect_uri=http://www.yangmi666.com/auth.html&scope=clfnetcore
+    /// </summary>
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -42,6 +45,8 @@ namespace CLF.Web.SSO
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseAppExceptionHandler();
+
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseIdentityServer();

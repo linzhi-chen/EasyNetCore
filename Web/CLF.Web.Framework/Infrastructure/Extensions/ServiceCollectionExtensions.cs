@@ -228,13 +228,15 @@ namespace CLF.Web.Framework.Infrastructure.Extensions
             // 默认cookie认证
             var authenticationBuilder = services.AddAuthentication(options =>
               {
-                  options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                  options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-
                   if (appConfig.JwtAuthenticationEnabled || appConfig.OAuthAuthenticationEnabled)
                   {
                       options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; //绑定[Authorize]，否则报401
                       options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;//认证未通过防止重定向到登录页，而是显示401
+                  }
+                  else
+                  {
+                      options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                      options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                   }
               })
              .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
@@ -247,11 +249,12 @@ namespace CLF.Web.Framework.Infrastructure.Extensions
             if (appConfig.JwtAuthenticationEnabled)
             {
                 var jwtConfig = services.ConfigureStartupConfig<JwtConfig>(configuration.GetSection("Jwt"));
+                var oAuthConfig = services.ConfigureStartupConfig<OAuthConfig>(configuration.GetSection("OAuth"));
                 AddJwtConfiguration(authenticationBuilder, jwtConfig);
             }
 
             //配置oauth
-            if (appConfig.OAuthAuthenticationEnabled)
+            if(appConfig.OAuthAuthenticationEnabled)
             {
                 var oAuthConfig = services.ConfigureStartupConfig<OAuthConfig>(configuration.GetSection("OAuth"));
                 AddOAuthConfiguration(authenticationBuilder, oAuthConfig);
@@ -277,7 +280,7 @@ namespace CLF.Web.Framework.Infrastructure.Extensions
             return config;
         }
 
-        private static void AddJwtConfiguration(AuthenticationBuilder authenticationBuilder,JwtConfig jwtConfig)
+        private static void AddJwtConfiguration(AuthenticationBuilder authenticationBuilder, JwtConfig jwtConfig)
         {
             authenticationBuilder.AddJwtBearer(options =>
             {
@@ -306,7 +309,7 @@ namespace CLF.Web.Framework.Infrastructure.Extensions
             });
         }
 
-        private static  void AddOAuthConfiguration(AuthenticationBuilder authenticationBuilder,OAuthConfig oAuthConfig)
+        private static void AddOAuthConfiguration(AuthenticationBuilder authenticationBuilder, OAuthConfig oAuthConfig)
         {
             authenticationBuilder.AddJwtBearer(options =>
             {

@@ -103,7 +103,16 @@ namespace CLF.WebApi.Controllers
                 throw new BusinessException("配置错误");
 
             type = type ?? "client";
-            var disco = await _httpClient.GetDiscoveryDocumentAsync(config.Authority);
+
+            var disco = await _httpClient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest()
+            {
+                Address=config.Authority,
+                Policy =
+                {
+                    RequireHttps = false//关闭Https验证
+                }
+            });
+
             if (disco.IsError)
                 return ThrowJsonMessage(false, disco.Error);
 

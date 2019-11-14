@@ -120,6 +120,15 @@ namespace CLF.Web.SSO
                     if (checkDbUser)
                 {
                     var user = _users.FindByUsername(model.Username);
+                    if(user==null)
+                    {
+                        user = new TestUser
+                        {
+                            SubjectId = dbUser.Id,
+                            Username = dbUser.UserName,
+                            Password = dbUser.PasswordHash
+                        };
+                    }
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username, clientId: context?.ClientId));
 
                     // only set explicit expiration here if user chooses "remember me". 

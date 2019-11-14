@@ -7,6 +7,7 @@ using CLF.DataAccess.Account;
 using CLF.Model.Account;
 using CLF.Web.Framework.Identity.Providers;
 using CLF.Web.Framework.Infrastructure.Extensions;
+using CLF.Web.SSO.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -69,7 +70,8 @@ namespace CLF.Web.SSO
                .AddInMemoryClients(config.GetClients());
 
             if (config.PasswordAuthorizationEnabled)
-                identityServerBuilder.AddTestUsers(GetIdentityTestUsers(services));
+                //identityServerBuilder.AddTestUsers(GetIdentityTestUsers(services));
+                identityServerBuilder.AddResourceOwnerValidator<IdentityUserValidator>();
         }
 
         /// <summary>

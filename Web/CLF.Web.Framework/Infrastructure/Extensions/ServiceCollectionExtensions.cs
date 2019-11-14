@@ -309,6 +309,11 @@ namespace CLF.Web.Framework.Infrastructure.Extensions
             });
         }
 
+        /// <summary>
+        /// 配置OAuth认证
+        /// </summary>
+        /// <param name="authenticationBuilder"></param>
+        /// <param name="oAuthConfig"></param>
         private static void AddOAuthConfiguration(AuthenticationBuilder authenticationBuilder, OAuthConfig oAuthConfig)
         {
             authenticationBuilder.AddJwtBearer(options =>

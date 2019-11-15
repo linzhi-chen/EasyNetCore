@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CLF.Common.Configuration;
 using CLF.Common.Exceptions;
+using Newtonsoft.Json;
 using Serilog;
 
 namespace CLF.Service.Core.Messages
@@ -20,9 +21,11 @@ namespace CLF.Service.Core.Messages
             {
                 var mailMessage = PrepareMailMessage(emailConfig, subject, body, toAddress, cc, bcc, headers);
                 var smtpClient = PrepareSmtpClient(emailConfig);
+                Log.Error(JsonConvert.SerializeObject(smtpClient));
                 smtpClient.Send(mailMessage);
+                Log.Error("send email completed");
             }
-            catch (ComponentException ex)
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
             }
@@ -36,7 +39,7 @@ namespace CLF.Service.Core.Messages
                 var smtpClient = PrepareSmtpClient(emailConfig);
                 return smtpClient.SendMailAsync(mailMessage);
             }
-            catch(ComponentException ex)
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 return Task.CompletedTask;

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -66,8 +67,11 @@ namespace CLF.WebApi.Controllers.Account
                         Body = $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>请单击激活账户</a>.",
                         To = new List<string> { model.Email }
                     };
-                     _emailSender.Send(emailMessage);
-                    return new ObjectResult(true);
+
+                    //发送注册邮件
+                    _emailSender.Send(emailMessage);
+
+                    return ThrowJsonMessage(true, "恭喜您，注册成功!");
                 }
                 return ThrowJsonMessage(false, result.Key.Errors.First().Description);
             }
@@ -130,6 +134,11 @@ namespace CLF.WebApi.Controllers.Account
             return ThrowJsonMessage(false, $"{nameof(email)}或{nameof(code)}不能为空");
         }
 
+
+        /// <summary>
+        /// Migration生成或者更新数据库
+        /// </summary>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         [ThrowIfException]

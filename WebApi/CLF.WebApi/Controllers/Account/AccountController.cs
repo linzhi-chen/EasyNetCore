@@ -66,7 +66,7 @@ namespace CLF.WebApi.Controllers.Account
                         Body = $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>请单击激活账户</a>.",
                         To = new List<string> { model.Email }
                     };
-                    await _emailSender.SendAsync(emailMessage);
+                     _emailSender.Send(emailMessage);
                     return new ObjectResult(true);
                 }
                 return ThrowJsonMessage(false, result.Key.Errors.First().Description);

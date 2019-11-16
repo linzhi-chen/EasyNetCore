@@ -19,7 +19,7 @@ namespace CLF.WebApi.Infrastructure.Extensions
                 {
                     Version = "v1",
                     Title = "CLF.WebApi",
-                    Description = "webapi接口文档",
+                    Description = "webapi接口文档，调用需要授权的接口，需要注册登录用户后（邮箱确认激活），添加token方能调用接口",
                     TermsOfService = "None",
                     Contact = new Contact
                     {

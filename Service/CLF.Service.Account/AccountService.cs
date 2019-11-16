@@ -112,6 +112,12 @@ namespace CLF.Service.Account
 
         public async Task<KeyValuePair<IdentityResult, AspNetUsers>> CreateUserAsync(RegisterDTO model)
         {
+            var existEmail = await _userManager.FindByEmailAsync(model.Email);
+            if(existEmail!=null)
+            {
+                throw new BusinessException("邮箱已经被注册");
+            }
+
             AspNetUsers aspNetUsers = new AspNetUsers
             {
                 EmailConfirmed = false,

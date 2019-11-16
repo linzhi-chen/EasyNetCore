@@ -21,9 +21,7 @@ namespace CLF.Service.Core.Messages
             {
                 var mailMessage = PrepareMailMessage(emailConfig, subject, body, toAddress, cc, bcc, headers);
                 var smtpClient = PrepareSmtpClient(emailConfig);
-                Log.Error(JsonConvert.SerializeObject(smtpClient));
                 smtpClient.Send(mailMessage);
-                Log.Error("send email completed");
             }
             catch (Exception ex)
             {

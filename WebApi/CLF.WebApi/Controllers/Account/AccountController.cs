@@ -63,8 +63,8 @@ namespace CLF.WebApi.Controllers.Account
                     var callbackUrl = Url.Action(nameof(AccountController.ConfirmEmail), "Account", new { email = user.Email, code = HttpUtility.UrlEncode(code) }, Request.Scheme, Request.Host.Host);
                     EmailMessage emailMessage = new EmailMessage
                     {
-                        Subject = "注册激活",
-                        Body = $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>请单击激活账户</a>.",
+                        Subject = "【CLFNETCORE】注册账户激活",
+                        Body = $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>恭喜您注册成功，请单击激活账户！</a>.",
                         To = new List<string> { model.Email }
                     };
 

@@ -112,7 +112,7 @@ namespace CLF.Web.Mvc.Controllers
                         Body = $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>请单击激活账户</a>.",
                         To = new List<string> { model.Email }
                     };
-                    await _emailSender.SendAsync(emailMessage);
+                     _emailSender.SendEmail(emailMessage);
                     return Json(true);
                 }
                 return ThrowJsonMessage(false, result.Key.Errors.First().Description);

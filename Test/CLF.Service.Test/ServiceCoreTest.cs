@@ -20,7 +20,7 @@ namespace CLF.Service.Test
                 Body = "hello,boy",
                 To= new List<string> { "172678033@qq.com" }
             };
-            emailSender.Send(emailMessage);
+            emailSender.SendEmail(emailMessage);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using CLF.DataAccess.Account;
+﻿using CLF.Common.Configuration;
+using CLF.Common.Infrastructure;
+using CLF.DataAccess.Account;
 using CLF.Model.Account;
 using CLF.Service.Account;
 using CLF.Service.Core.Messages;
@@ -69,7 +71,7 @@ namespace CLF.WebApi.Controllers.Account
                     };
 
                     //发送注册邮件
-                    _emailSender.SendAsync(emailMessage);
+                    _emailSender.SendEmail(emailMessage);
 
                     return ThrowJsonMessage(true, "恭喜您，注册成功!");
                 }

@@ -21,7 +21,9 @@ namespace CLF.Service.Core.Messages
             {
                 var mailMessage = PrepareMailMessage(emailConfig, subject, body, toAddress, cc, bcc, headers);
                 var smtpClient = PrepareSmtpClient(emailConfig);
+                Log.Warning($"调用同步发送邮件接口，邮件参数如下：{JsonConvert.SerializeObject(smtpClient)}");
                 smtpClient.Send(mailMessage);
+                Log.Warning($"调用同步发送邮件成功！");
             }
             catch (Exception ex)
             {
@@ -35,7 +37,10 @@ namespace CLF.Service.Core.Messages
             {
                 var mailMessage = PrepareMailMessage(emailConfig, subject, body, toAddress, cc, bcc, headers);
                 var smtpClient = PrepareSmtpClient(emailConfig);
-                return smtpClient.SendMailAsync(mailMessage);
+                Log.Warning($"调用异步发送邮件接口，邮件参数如下：{JsonConvert.SerializeObject(smtpClient)}");
+                var result= smtpClient.SendMailAsync(mailMessage);
+                Log.Warning($"调用异步发送邮件成功！");
+                return result;
             }
             catch (Exception ex)
             {

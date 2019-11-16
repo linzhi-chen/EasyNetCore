@@ -10,13 +10,32 @@ namespace CLF.Service.Core.Messages
 {
   public static   class EmailSenderExtension
     {
-        public static void Send( this IEmailSender emailSender,EmailMessage emailMessage)
+        /// <summary>
+        /// 发送邮件
+        /// </summary>
+        /// <param name="emailSender"></param>
+        /// <param name="emailMessage"></param>
+        public static void SendEmail(this IEmailSender emailSender, EmailMessage emailMessage)
         {
             var config = EngineContext.Current.Resolve<EmailConfig>();
-            emailSender.SendEmail(config, emailMessage.Subject, emailMessage.Body, emailMessage.To, emailMessage.CC, emailMessage.BCC,emailMessage.Headers);
+
+            if (config != null && config.SendEmailAsync)
+            {
+                SendAsync(emailSender, emailMessage);
+            }
+            else
+            {
+                Send(emailSender, emailMessage);
+            }
         }
 
-        public static Task SendAsync(this IEmailSender emailSender, EmailMessage emailMessage)
+        private static void Send(IEmailSender emailSender, EmailMessage emailMessage)
+        {
+            var config = EngineContext.Current.Resolve<EmailConfig>();
+            emailSender.SendEmail(config, emailMessage.Subject, emailMessage.Body, emailMessage.To, emailMessage.CC, emailMessage.BCC, emailMessage.Headers);
+        }
+
+        private static Task SendAsync(IEmailSender emailSender, EmailMessage emailMessage)
         {
             var config = EngineContext.Current.Resolve<EmailConfig>();
             return emailSender.SendMailAsync(config, emailMessage.Subject, emailMessage.Body, emailMessage.To, emailMessage.CC, emailMessage.BCC, emailMessage.Headers);

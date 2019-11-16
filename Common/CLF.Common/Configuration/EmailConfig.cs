@@ -24,5 +24,10 @@ namespace CLF.Common.Configuration
         public bool EnableSsl { get; set; }
 
         public bool UseDefaultCredentials { get; set; }
+
+        /// <summary>
+        /// 是否是异步发送邮件
+        /// </summary>
+        public bool SendEmailAsync { get; set; }
     }
 }

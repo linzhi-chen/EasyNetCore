@@ -15,6 +15,9 @@ namespace CLF.Core.Test.Domain
     [TestFixture]
     public class DatabaseInitializerTest
     {
+        /// <summary>
+        /// 
+        /// </summary>
         [SetUp]
         public void UseStartup()
         {

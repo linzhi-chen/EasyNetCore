@@ -86,7 +86,7 @@ namespace CLF.WebApi.Controllers.Account
             return Content("OK");
         }
         /// <summary>
-        /// 用户登录成功后保存jwt的token，refreshToken
+        /// 用户登录成功后保存jwt的token，refreshToken。
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>

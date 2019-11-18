@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CLF.Common.Configuration;
 using CLF.Web.Framework.Infrastructure.Extensions;
 using CLF.WebApi.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;

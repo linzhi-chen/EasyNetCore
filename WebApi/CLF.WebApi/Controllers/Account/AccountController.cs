@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -33,10 +34,11 @@ namespace CLF.WebApi.Controllers.Account
         private IAccountService _accountService;
         private UserManager<AspNetUsers> _userManager;
         private IEmailSender _emailSender;
-
+        private EmailConfig _emailConfig;
         public AccountController(ApplicationSignInManager applicationSignInManager, ITokenService tokenService, IAccountService accountService,
-            UserManager<AspNetUsers> userManager, IEmailSender emailSender)
+            UserManager<AspNetUsers> userManager, IEmailSender emailSender, IOptionsSnapshot<EmailConfig> _snapshotOptionsAccessor)
         {
+            this._emailConfig = _snapshotOptionsAccessor.Value;
             this._applicationSignInManager = applicationSignInManager;
             this._tokenService = tokenService;
             this._accountService = accountService;
@@ -71,7 +73,7 @@ namespace CLF.WebApi.Controllers.Account
                     };
 
                     //发送注册邮件
-                    _emailSender.SendEmail(emailMessage);
+                    _emailSender.SendEmail(emailMessage, _emailConfig);
 
                     return ThrowJsonMessage(true, "恭喜您，注册成功!");
                 }

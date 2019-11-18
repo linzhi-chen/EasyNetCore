@@ -277,6 +277,9 @@ namespace CLF.Web.Framework.Infrastructure.Extensions
             //注册TConfig对象，后续通过EngineContext.Current.Resolve<TConfig>()即可获取到相关配置
             services.AddSingleton(config);
 
+            //保证可以热更新
+            services.Configure<TConfig>(configuration); 
+
             return config;
         }
 

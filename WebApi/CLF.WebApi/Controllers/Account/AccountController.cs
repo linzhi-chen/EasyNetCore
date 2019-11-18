@@ -100,6 +100,9 @@ namespace CLF.WebApi.Controllers.Account
             if(!checkPassword)
                 return ThrowJsonMessage(false, "用户名或密码错误");
 
+            if (!await _userManager.IsEmailConfirmedAsync(user))
+                return ThrowJsonMessage(false, "账户尚未激活");
+
             //生成token
             var token = _tokenService.GenerateAccessToken(userName);
             var refreshToken = _tokenService.GenerateRefreshToken();

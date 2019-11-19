@@ -73,7 +73,7 @@ namespace CLF.WebApi.Controllers.Account
                     };
 
                     //发送注册邮件
-                    _emailSender.SendEmail(emailMessage, _emailConfig);
+                    _emailSender.SendEmail(emailMessage, _emailConfig?.SendEmailAsync??false);
 
                     return ThrowJsonMessage(true, "恭喜您，注册成功!");
                 }

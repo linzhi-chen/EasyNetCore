@@ -11,17 +11,14 @@ namespace CLF.Service.Core.Messages
   public static   class EmailSenderExtension
     {
         /// <summary>
-        ///  发送邮件
+        /// 发送邮件
         /// </summary>
         /// <param name="emailSender"></param>
         /// <param name="emailMessage"></param>
-        /// <param name="config"></param>
-        public static void SendEmail(this IEmailSender emailSender, EmailMessage emailMessage, EmailConfig config)
+        /// <param name="isAsync"></param>
+        public static void SendEmail(this IEmailSender emailSender, EmailMessage emailMessage,bool isAsync=false)
         {
-            if (config == null)
-                config = EngineContext.Current.Resolve<EmailConfig>();
-
-            if (config.SendEmailAsync)
+            if (isAsync)
             {
                 SendAsync(emailSender, emailMessage);
             }

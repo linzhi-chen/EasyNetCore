@@ -66,7 +66,9 @@ namespace CLF.Test
             result.EnsureSuccessStatusCode();
         }
         
-
+        /// <summary>
+        /// 
+        /// </summary>
         public class jwtResult
         {
             public bool  success { get; set; }

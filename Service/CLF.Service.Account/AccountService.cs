@@ -18,6 +18,7 @@ using CLF.Common.Exceptions;
 using CLF.Common.SecurityHelper;
 using System.Linq;
 using CLF.Domain.Core.EFRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace CLF.Service.Account
 {
@@ -67,9 +68,10 @@ namespace CLF.Service.Account
         }
 
         public PaginatedBaseDTO<PermissionDTO> FindPagenatedListWithCount(int pageIndex, int pageSize, string controllerName,string actionName)
-        {
+       {
             string searchValue = $"{controllerName}-{actionName}-{pageIndex}-{pageSize}";
             var cacheKey = string.Format( AccountServiceDefaults.GetPermissionListCacheKey,searchValue);
+
 
             return _staticCacheManager.Get(cacheKey, () =>
             {

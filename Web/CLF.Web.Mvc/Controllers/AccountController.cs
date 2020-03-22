@@ -76,7 +76,7 @@ namespace CLF.Web.Mvc.Controllers
                     ModelState.AddModelError("Email", "账户或密码错误，请重新输入！");
                     break;
                 case SignInStatus.LockedOut:
-                    ModelState.AddModelError("Email", "账户已被锁定，请稍后登陆！");
+                    ModelState.AddModelError("Email", "账户已被锁定，请稍后登陆");
                     break;
                 case SignInStatus.Success:
                     return Redirect(returnUrl);

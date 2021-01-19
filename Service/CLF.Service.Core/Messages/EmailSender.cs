@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using CLF.Common.Configuration;
 using CLF.Common.Exceptions;
+using MailKit.Net.Smtp;
+using MimeKit;
 using Newtonsoft.Json;
 using Serilog;
 
@@ -14,74 +15,95 @@ namespace CLF.Service.Core.Messages
 {
     public class EmailSender : IEmailSender
     {
-        public void SendEmail(EmailConfig emailConfig, string subject, string body, List<string> toAddress, List<string> cc = null,
-         List<string> bcc = null, IDictionary<string, string> headers = null)
+        public  void SendEmail(EmailMessage emailMessage, bool isAsync = false)
         {
-            try
+            if (isAsync)
             {
-                var mailMessage = PrepareMailMessage(emailConfig, subject, body, toAddress, cc, bcc, headers);
-                var smtpClient = PrepareSmtpClient(emailConfig);
-                Log.Warning($"调用同步发送邮件接口，邮件参数如下：{JsonConvert.SerializeObject(smtpClient)}");
-                smtpClient.Send(mailMessage);
-                Log.Warning($"调用同步发送邮件成功！");
+                SendAsync(emailMessage);
             }
-            catch (Exception ex)
+            else
             {
-                Log.Error(ex.Message);
+                Send(emailMessage);
             }
         }
 
-        public Task SendMailAsync(EmailConfig emailConfig, string subject, string body, List<string> toAddress, List<string> cc = null, List<string> bcc = null, IDictionary<string, string> headers = null)
+        public  void SendEmail(EmailConfig emailConfig, string subject, string body, List<string> toAddress, List<string> cc = null,
+
+ List<string> bcc = null, IDictionary<string, string> headers = null)
         {
             try
             {
                 var mailMessage = PrepareMailMessage(emailConfig, subject, body, toAddress, cc, bcc, headers);
                 var smtpClient = PrepareSmtpClient(emailConfig);
-                Log.Warning($"调用异步发送邮件接口，邮件参数如下：{JsonConvert.SerializeObject(smtpClient)}");
-                var result= smtpClient.SendMailAsync(mailMessage);
-                Log.Warning($"调用异步发送邮件成功！");
-                return result;
+                smtpClient.Send(mailMessage);
+                smtpClient.Disconnect(true);
             }
             catch (Exception ex)
             {
-                Log.Error(ex.Message);
+                //throw new ProcessException($"{ex.Message}");
+            }
+        }
+
+        public  Task SendMailAsync(EmailConfig emailConfig, string subject, string body, List<string> toAddress, List<string> cc = null, List<string> bcc = null, IDictionary<string, string> headers = null)
+        {
+            try
+            {
+                var mailMessage = PrepareMailMessage(emailConfig, subject, body, toAddress, cc, bcc, headers);
+                var smtpClient = PrepareSmtpClient(emailConfig);
+                var result = smtpClient.SendAsync(mailMessage);
+                smtpClient.Disconnect(true);
+                return result;
+            }
+
+            catch (Exception ex)
+            {
                 return Task.CompletedTask;
             }
         }
 
-        private SmtpClient PrepareSmtpClient(EmailConfig emailConfig)
+        private  void Send(EmailMessage emailMessage)
+
         {
-            var smtpClient = new SmtpClient();
-            smtpClient.UseDefaultCredentials = emailConfig.UseDefaultCredentials;
-            smtpClient.Host = emailConfig.Host;
-            smtpClient.Port = emailConfig.Port;
-            smtpClient.EnableSsl = emailConfig.EnableSsl;
-            smtpClient.Credentials = emailConfig.UseDefaultCredentials ?
-                CredentialCache.DefaultNetworkCredentials :
-                new NetworkCredential(emailConfig.UserName, emailConfig.Password);
-            return smtpClient;
+            var config = new EmailConfig();
+            SendEmail(config, emailMessage.Subject, emailMessage.Body, emailMessage.To, emailMessage.CC, emailMessage.BCC, emailMessage.Headers);
         }
 
-        private MailMessage PrepareMailMessage(EmailConfig emailConfig, string subject, string body, List<string> toAddress, List<string> cc = null,
+        private  Task SendAsync(EmailMessage emailMessage)
+        {
+            var config = new EmailConfig();
+            return SendMailAsync(config, emailMessage.Subject, emailMessage.Body, emailMessage.To, emailMessage.CC, emailMessage.BCC, emailMessage.Headers);
+        }
+
+        private  SmtpClient PrepareSmtpClient(EmailConfig emailConfig)
+        {
+            var client = new SmtpClient();
+            client.Connect(emailConfig.Host, emailConfig.Port);
+            client.Authenticate(emailConfig.Email, emailConfig.Password);
+            return client;
+        }
+
+        private static MimeMessage PrepareMailMessage(EmailConfig emailConfig, string subject, string body, List<string> toAddress, List<string> cc = null,
+
     List<string> bcc = null, IDictionary<string, string> headers = null)
         {
             if (toAddress == null || !toAddress.Any())
+
             {
-                throw new ComponentException("收件人邮箱不能为空!");
+                throw new Exception("收件人邮箱不能为空!");
             }
 
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress(emailConfig.Email, emailConfig.DisplayName);
+            MimeMessage mailMessage = new MimeMessage();
+            mailMessage.From.Add(new MailboxAddress(emailConfig.DisplayName, emailConfig.Email));
             foreach (var toEmail in toAddress)
             {
-                mailMessage.To.Add(toEmail);
+                mailMessage.To.Add(new MailboxAddress(toEmail));
             }
 
             if (cc != null)
             {
                 foreach (var ccEmail in cc)
                 {
-                    mailMessage.CC.Add(ccEmail);
+                    mailMessage.Cc.Add(new MailboxAddress(ccEmail));
                 }
             }
 
@@ -89,7 +111,7 @@ namespace CLF.Service.Core.Messages
             {
                 foreach (var bccEmail in bcc)
                 {
-                    mailMessage.Bcc.Add(bccEmail);
+                    mailMessage.Bcc.Add(new MailboxAddress(bccEmail));
                 }
             }
 
@@ -101,9 +123,7 @@ namespace CLF.Service.Core.Messages
                 }
             }
             mailMessage.Subject = subject;
-            mailMessage.Body = body;
-            mailMessage.IsBodyHtml = true;
-
+            mailMessage.Body = new TextPart("plain") { Text = body };
             return mailMessage;
         }
     }

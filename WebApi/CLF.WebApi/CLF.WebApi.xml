@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CLF.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:CLF.WebApi.Controllers.Account.AccountController.Register(CLF.Service.DTO.Account.RegisterDTO)">
+            <summary>
+            用户注册
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CLF.WebApi.Controllers.Account.AccountController.Login(System.String,System.String)">
+            <summary>
+            用户登录成功后保存jwt的token，refreshToken。
+            </summary>
+            <param name="userName"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CLF.WebApi.Controllers.Account.AccountController.InitAcccountDatabase">
+            <summary>
+            Migration生成或者更新数据库
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CLF.WebApi.Controllers.Account.PermissionController.GetPermissions(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            查询权限列表
+            </summary>
+            <param name="start">起始页</param>
+            <param name="length">每页记录条数</param>
+            <param name="controllerName">控制器</param>
+            <param name="actionName">actionName</param>
+            <returns>权限列表</returns>
+        </member>
+        <member name="M:CLF.WebApi.Controllers.OAuthController.RefreshToken(System.String,System.String)">
+            <summary>
+            jwt刷新token
+            </summary>
+            <param name="token"></param>
+            <param name="refreshToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CLF.WebApi.Controllers.OAuthController.RevokeToken">
+            <summary>
+            废除jwt refreshToken
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CLF.WebApi.Controllers.OAuthController.GetOAuthToken(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            获取OAuth2.0认证 AccessToken
+            </summary>
+            <param name="type">授权模式（client，password，code）</param>
+            <param name="clientId">客户端ID</param>
+            <param name="clientSecret">客户端密码</param>
+            <param name="userName">用户名</param>
+            <param name="password">用户密码</param>
+            <param name="code">授权码</param>
+            <param name="scope">三种模式都可以不提供该参数</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

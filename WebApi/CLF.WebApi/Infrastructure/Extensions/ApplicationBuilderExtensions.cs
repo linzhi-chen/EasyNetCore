@@ -14,7 +14,7 @@ namespace CLF.WebApi.Infrastructure.Extensions
 
             application.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V3");
                 options.RoutePrefix = string.Empty;
             });
         }
